@@ -26,6 +26,11 @@
  */
 -->
 <config>
+    <modules>
+        <VF_ScheduledContent>
+            <version>0.1.0</version>
+        </VF_ScheduledContent>
+    </modules>
     <global>
         <blocks>
             <scheduledContent>
@@ -51,6 +56,14 @@
                 </entities>
             </scheduledContent_resource>
         </models>
+        <resources>
+            <vf_scheduledcontent_setup>
+                <setup>
+                    <module>VF_ScheduledContent</module>
+                    <connection>core_setup</connection>
+                </setup>
+            </vf_scheduledcontent_setup>
+        </resources>
     </global>
     <admin>
         <routers>
