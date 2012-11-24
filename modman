@@ -1,0 +1,3 @@
+app/code/local/VF/ScheduledContent app/code/local/VF/ScheduledContent
+app/design/adminhtml/default/default/layout/scheduled-content.xml app/design/adminhtml/default/default/layout/scheduled-content.xml
+app/etc/modules/VF_ScheduledContent.xml app/etc/modules/VF_ScheduledContent.xml
