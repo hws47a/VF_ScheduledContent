@@ -22,4 +22,4 @@ For each content item you can specify:
   * In Layout `<block type="scheduledContent/data" data_id="<identifier>" />`  
 * After showing content for this day saves to Block HTML cache  
   
-It shows content with needed <identifier>, for current store, when Start Date <= <current_date> <= End Date
+It shows content with needed Identifier, for current store, when Start Date <= current date <= End Date
