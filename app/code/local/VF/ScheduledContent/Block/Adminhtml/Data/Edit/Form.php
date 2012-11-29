@@ -48,6 +48,8 @@ class VF_ScheduledContent_Block_Adminhtml_Data_Edit_Form extends Mage_Adminhtml_
         $form->setUseContainer(true);
         $this->setForm($form);
 
+        $data = Mage::registry('current_scheduledContent_data');
+
         //add fieldset
         $fieldSet = $form->addFieldset(
             'main_field_set',
@@ -60,6 +62,23 @@ class VF_ScheduledContent_Block_Adminhtml_Data_Edit_Form extends Mage_Adminhtml_
             'required'  => true,
             'name'      => 'identifier'
         ));
+
+        // Add store multiple select
+        if (!Mage::app()->isSingleStoreMode()) {
+            $fieldSet->addField('stores', 'multiselect', array(
+                'name'      => 'stores[]',
+                'label'     => Mage::helper('cms')->__('Store View'),
+                'title'     => Mage::helper('cms')->__('Store View'),
+                'required'  => true,
+                'values'    => Mage::getSingleton('adminhtml/system_store')->getStoreValuesForForm(false, true)
+            ));
+        } else {
+            $fieldSet->addField('stores', 'hidden', array(
+                'name'      => 'stores[]',
+                'value'     => Mage::app()->getStore(true)->getId()
+            ));
+            $data->setStores(Mage::app()->getStore(true)->getId());
+        }
 
         $fieldSet->addField('content', 'textarea', array(
             'label'     => $this->__('Content'),
@@ -90,7 +109,6 @@ class VF_ScheduledContent_Block_Adminhtml_Data_Edit_Form extends Mage_Adminhtml_
             'image'     => $this->getSkinUrl('images/grid-cal.gif'),
         ));
 
-        $data = Mage::registry('current_scheduledContent_data');
         if ($data) {
             $form->setValues($data->getData());
         }

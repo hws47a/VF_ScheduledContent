@@ -41,4 +41,50 @@ class VF_ScheduledContent_Model_Resource_Data extends Mage_Core_Model_Mysql4_Abs
     {
         $this->_init('scheduledContent/data', null);
     }
+
+    /**
+     * Assign page to store views
+     *
+     * @param Mage_Core_Model_Abstract $object
+     *
+     * @return Mage_Core_Model_Mysql4_Abstract
+     */
+    protected function _afterSave(Mage_Core_Model_Abstract $object)
+    {
+        $condition = $this->_getWriteAdapter()->quoteInto('data_id = ?', $object->getId());
+        $this->_getWriteAdapter()->delete($this->getTable('scheduledContent/data_store'), $condition);
+
+        foreach ((array)$object->getData('stores') as $store) {
+            $storeArray = array();
+            $storeArray['data_id'] = $object->getId();
+            $storeArray['store_id'] = $store;
+            $this->_getWriteAdapter()->insert($this->getTable('scheduledContent/data_store'), $storeArray);
+        }
+
+        return parent::_afterSave($object);
+    }
+
+    /**
+     * Load stores after model load
+     *
+     * @param Mage_Core_Model_Abstract $object
+     *
+     * @return \Mage_Core_Model_Mysql4_Abstract
+     */
+    protected function _afterLoad(Mage_Core_Model_Abstract $object)
+    {
+        $select = $this->_getReadAdapter()->select()
+            ->from($this->getTable('scheduledContent/data_store'))
+            ->where('data_id = ?', $object->getId());
+
+        if ($data = $this->_getReadAdapter()->fetchAll($select)) {
+            $storesArray = array();
+            foreach ($data as $row) {
+                $storesArray[] = $row['store_id'];
+            }
+            $object->setData('stores', $storesArray);
+        }
+
+        return parent::_afterLoad($object);
+    }
 }

@@ -41,4 +41,49 @@ class VF_ScheduledContent_Model_Resource_Data_Collection extends Mage_Core_Model
     {
         $this->_init('scheduledContent/data');
     }
+
+    /**
+     * Add Filter by store
+     *
+     * @param int|Mage_Core_Model_Store $store
+     *
+     * @param bool                      $withAdmin
+     *
+     * @return Mage_Cms_Model_Mysql4_Page_Collection
+     */
+    public function addStoreFilter($store, $withAdmin = true)
+    {
+        if (!$this->getFlag('store_filter_added')) {
+            if ($store instanceof Mage_Core_Model_Store) {
+                $store = array($store->getId());
+            }
+
+            $this->getSelect()->join(
+                array('store_table' => $this->getTable('scheduledContent/data_store')),
+                'main_table.data_id = store_table.data_id',
+                array()
+            )
+                ->where('store_table.store_id in (?)', ($withAdmin ? array(0, $store) : $store))
+                ->group('main_table.data_id');
+
+            $this->setFlag('store_filter_added', true);
+        }
+
+        return $this;
+    }
+
+    /**
+     * Get SQL for get record count.
+     * Extra group by strip added.
+     *
+     * @return Varien_Db_Select
+     */
+    public function getSelectCountSql()
+    {
+        $countSelect = parent::getSelectCountSql();
+
+        $countSelect->reset(Zend_Db_Select::GROUP);
+
+        return $countSelect;
+    }
 }

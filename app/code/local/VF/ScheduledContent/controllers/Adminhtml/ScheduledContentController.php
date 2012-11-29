@@ -127,6 +127,14 @@ class VF_ScheduledContent_Adminhtml_ScheduledContentController extends Mage_Admi
                 $this->_getSession()->addSuccess($this->__('Item was successfully saved.'));
                 $this->_getSession()->setFormData(false);
 
+                if ($this->getRequest()->getParam('clear', false)) {
+                    Mage::app()->getCache()->clean(
+                        Zend_Cache::CLEANING_MODE_MATCHING_TAG,
+                        array(Mage_Core_Block_Abstract::CACHE_GROUP)
+                    );
+                    $this->_getSession()->addSuccess($this->__('Block HTML cache has been cleared.'));
+                }
+
             } catch (Mage_Core_Exception $e) {
                 $this->_getSession()->addError($e->getMessage());
                 $error = true;

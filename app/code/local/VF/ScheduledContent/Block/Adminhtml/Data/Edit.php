@@ -41,6 +41,27 @@ class VF_ScheduledContent_Block_Adminhtml_Data_Edit extends Mage_Adminhtml_Block
         $this->_objectId = 'id';
         $this->_controller = 'adminhtml_data';
         $this->_blockGroup = 'scheduledContent';
+
+        $this->_addButton('save_and_clear_cache', array(
+            'label' => $this->__('Save and Clear Block HTML Cache'),
+            'onclick' => 'saveAndClearCache()',
+            'class' => 'save'
+        ));
+
+        $this->_addButton('save_and_continue', array(
+            'label' => Mage::helper('adminhtml')->__('Save And Continue'),
+            'onclick' => 'saveAndContinueEdit()',
+            'class' => 'save',
+        ), -100);
+
+        $this->_formScripts[] = "
+            function saveAndContinueEdit(){
+                editForm.submit($('edit_form').action+'back/edit/');
+            }
+            function saveAndClearCache(){
+                editForm.submit($('edit_form').action+'clear/1/');
+            }
+        ";
     }
 
     /**

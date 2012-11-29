@@ -46,10 +46,15 @@ class VF_ScheduledContent_Block_Data extends Mage_Core_Block_Template
 
         /** @var $collection VF_ScheduledContent_Model_Resource_Data_Collection */
         $collection = $model->getCollection();
+        //add current store + all stores filter
+        $collection->addStoreFilter(Mage::app()->getStore(), true);
+        //apply dates filter
         $currentDate = $currentDate->get(Varien_Date::DATE_INTERNAL_FORMAT);
-        $collection->addFieldToFilter('start_at', array('lt' => $currentDate))
-            ->addFieldToFilter('end_at', array('gt' => $currentDate))
-            ->addFieldToFilter('identifier', $this->getDataId());
+        $collection->addFieldToFilter('start_at', array('lteq' => $currentDate))
+            ->addFieldToFilter('end_at', array('gteq' => $currentDate));
+        //apply identifier filter
+        $collection->addFieldToFilter('identifier', $this->getDataId());
+        //order by start_id and limit 1
         $collection->addOrder('start_at', 'ASC')
             ->setPageSize(1)
             ->setCurPage(1);

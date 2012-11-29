@@ -82,6 +82,20 @@ class VF_ScheduledContent_Block_Adminhtml_Data_Grid extends Mage_Adminhtml_Block
             'index'     => 'identifier'
         ));
 
+        // add store column
+        if (!Mage::app()->isSingleStoreMode()) {
+            $this->addColumn('stores', array(
+                'header'        => Mage::helper('cms')->__('Store View'),
+                'index'         => 'stores',
+                'type'          => 'store',
+                'store_all'     => true,
+                'store_view'    => true,
+                'sortable'      => false,
+                'filter_condition_callback'
+                => array($this, '_filterStoreCondition'),
+            ));
+        }
+
         $this->addColumn('content', array(
             'header'    => $this->__('Content'),
             'align'     => 'left',
@@ -104,6 +118,33 @@ class VF_ScheduledContent_Block_Adminhtml_Data_Grid extends Mage_Adminhtml_Block
         ));
 
         return parent::_prepareColumns();
+    }
+
+    /**
+     * Apply afterLoad method for each model in collection
+     * This method loads store data to each model
+     *
+     * @return Mage_Adminhtml_Block_Widget_Grid|void
+     */
+    protected function _afterLoadCollection()
+    {
+        $this->getCollection()->walk('afterLoad');
+        parent::_afterLoadCollection();
+    }
+
+    /**
+     * This method is used to correct filter of stores column
+     *
+     * @param $collection
+     * @param $column
+     */
+    protected function _filterStoreCondition($collection, $column)
+    {
+        if (!$value = $column->getFilter()->getValue()) {
+            return;
+        }
+
+        $this->getCollection()->addStoreFilter($value);
     }
 
     /**
