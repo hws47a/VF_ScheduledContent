@@ -99,7 +99,8 @@ class VF_ScheduledContent_Block_Adminhtml_Data_Grid extends Mage_Adminhtml_Block
         $this->addColumn('content', array(
             'header'    => $this->__('Content'),
             'align'     => 'left',
-            'type'      => 'text',
+            'type'      => 'longtext',
+            'escape'    => true,
             'index'     => 'content'
         ));
 
