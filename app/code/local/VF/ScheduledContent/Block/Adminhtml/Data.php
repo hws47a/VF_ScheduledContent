@@ -40,5 +40,6 @@ class VF_ScheduledContent_Block_Adminhtml_Data extends Mage_Adminhtml_Block_Widg
         parent::__construct();
         $this->_controller = 'adminhtml_data';
         $this->_blockGroup = 'scheduledContent';
+        $this->_headerText = $this->__('Scheduled Content Data');
     }
 }
