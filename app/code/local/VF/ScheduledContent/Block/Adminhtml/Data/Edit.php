@@ -43,7 +43,7 @@ class VF_ScheduledContent_Block_Adminhtml_Data_Edit extends Mage_Adminhtml_Block
         $this->_blockGroup = 'scheduledContent';
 
         $this->_addButton('save_and_clear_cache', array(
-            'label' => $this->__('Save and Clear Block HTML Cache'),
+            'label' => $this->__('Save and Apply'),
             'onclick' => 'saveAndClearCache()',
             'class' => 'save'
         ));
@@ -59,7 +59,7 @@ class VF_ScheduledContent_Block_Adminhtml_Data_Edit extends Mage_Adminhtml_Block
                 editForm.submit($('edit_form').action+'back/edit/');
             }
             function saveAndClearCache(){
-                editForm.submit($('edit_form').action+'clear/1/');
+                editForm.submit($('edit_form').action+'apply/1/');
             }
         ";
     }

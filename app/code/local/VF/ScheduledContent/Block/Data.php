@@ -35,11 +35,9 @@ class VF_ScheduledContent_Block_Data extends Mage_Core_Block_Template
     /**
      * Get Current Data
      *
-     * @param Zend_Date $currentDate
-     *
      * @return VF_ScheduledContent_Model_Data
      */
-    protected function _getCurrentData(Zend_Date $currentDate)
+    protected function _getCurrentData()
     {
         /** @var $model VF_ScheduledContent_Model_Data */
         $model = Mage::getModel('scheduledContent/data');
@@ -49,7 +47,7 @@ class VF_ScheduledContent_Block_Data extends Mage_Core_Block_Template
         //add current store + all stores filter
         $collection->addStoreFilter(Mage::app()->getStore(), true);
         //apply dates filter
-        $currentDate = $currentDate->get(Varien_Date::DATE_INTERNAL_FORMAT);
+        $currentDate = Mage::app()->getLocale()->date()->get(Varien_Date::DATE_INTERNAL_FORMAT);
         $collection->addFieldToFilter('start_at', array('lteq' => $currentDate))
             ->addFieldToFilter('end_at', array('gteq' => $currentDate));
         //apply identifier filter
@@ -68,19 +66,16 @@ class VF_ScheduledContent_Block_Data extends Mage_Core_Block_Template
     /**
      * Get Cached Content
      *
-     * @param Zend_Date $currentDate
-     *
      * @return string
      */
-    protected function _getCachedContent(Zend_Date $currentDate)
+    protected function _getCachedContent()
     {
-        $cacheId = 'SCHEDULED_CONTENT_' . $this->getDataId()
-            . '_' . $currentDate->get(Varien_Date::DATE_INTERNAL_FORMAT);
-        $content = Mage::app()->getCache()->load($cacheId);
+        /** @var $cacheModel VF_ScheduledContent_Model_Cache */
+        $cacheModel = Mage::getModel('scheduledContent/cache');
+        $content = $cacheModel->getCacheByDataId($this->getDataId());
         if (!$content) {
-            $content = (string) $this->_getCurrentData($currentDate)->getContent();
-            Mage::app()->getCache()->save($content, $cacheId,
-                array(Mage_Core_Block_Abstract::CACHE_GROUP), 86400);
+            $content = (string) $this->_getCurrentData()->getContent();
+            $cacheModel->saveData($content, $this->getDataId());
         }
 
         return $content;
@@ -93,8 +88,6 @@ class VF_ScheduledContent_Block_Data extends Mage_Core_Block_Template
      */
     protected function _toHtml()
     {
-        $currentData = Mage::app()->getLocale()->date();
-
-        return $this->_getCachedContent($currentData);
+        return $this->_getCachedContent();
     }
 }
