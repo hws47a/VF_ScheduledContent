@@ -37,9 +37,25 @@ class VF_ScheduledContent_Block_Adminhtml_Data extends Mage_Adminhtml_Block_Widg
      */
     public function __construct()
     {
+        $this->_addButton('clear_cache', array(
+            'label'     => $this->__('Apply All'),
+            'onclick'   => 'setLocation(\'' . $this->getApplyAllUrl() .'\')',
+            'class'     => 'save',
+        ));
+
         parent::__construct();
         $this->_controller = 'adminhtml_data';
         $this->_blockGroup = 'scheduledContent';
         $this->_headerText = $this->__('Scheduled Content Data');
+    }
+
+    /**
+     * Get Apply All Blocks Data Url
+     *
+     * @return string
+     */
+    public function getApplyAllUrl()
+    {
+        return $this->getUrl('*/*/applyAll');
     }
 }

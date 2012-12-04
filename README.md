@@ -20,6 +20,6 @@ For each content item you can specify:
 * Show content:  
   * In CMS block or page with `{{block type="scheduledContent/data" data_id="<identifier>"}}`  
   * In Layout `<block type="scheduledContent/data" data_id="<identifier>" />`  
-* After showing content for this day saves to Block HTML cache  
+* After showing content for this day saves to Block HTML cache. To clear cache for one block - use "Save and Apply" button, for all blocks - "Apply All" button.
   
 It shows content with needed Identifier, for current store, when Start Date <= current date <= End Date

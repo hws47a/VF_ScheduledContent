@@ -42,4 +42,14 @@ class VF_ScheduledContent_Model_Data extends Mage_Core_Model_Abstract
         parent::_construct();
         $this->_init('scheduledContent/data');
     }
+
+    /**
+     * Get all identifiers
+     *
+     * @return array
+     */
+    public function getAllIdentifiers()
+    {
+        return (array) $this->_getResource()->getAllIdentifiers();
+    }
 }

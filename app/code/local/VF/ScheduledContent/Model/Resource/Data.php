@@ -87,4 +87,17 @@ class VF_ScheduledContent_Model_Resource_Data extends Mage_Core_Model_Mysql4_Abs
 
         return parent::_afterLoad($object);
     }
+
+    /**
+     * Get all identifiers
+     *
+     * @return array
+     */
+    public function getAllIdentifiers()
+    {
+        $select = $this->_getReadAdapter()->select()
+            ->from($this->getMainTable(), 'identifier')
+            ->group('identifier');
+        return (array) $this->_getReadAdapter()->fetchCol($select, array('identifier'));
+    }
 }

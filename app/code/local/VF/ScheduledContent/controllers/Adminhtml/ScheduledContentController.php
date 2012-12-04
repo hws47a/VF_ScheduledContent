@@ -252,4 +252,26 @@ class VF_ScheduledContent_Adminhtml_ScheduledContentController extends Mage_Admi
 
         $this->_redirect('*/*/');
     }
+
+    public function applyAllAction()
+    {
+        $cleared = 0;
+
+        $identifiers = Mage::getModel($this->_model)->getAllIdentifiers();
+        if (!empty($identifiers)) {
+            /** @var $cacheModel VF_ScheduledContent_Model_Cache */
+            $cacheModel = Mage::getModel('scheduledContent/cache');
+            foreach ($identifiers as $_dataId) {
+                $cleared += (int)$cacheModel->clearByDataId($_dataId);
+            }
+        }
+
+        if ($cleared) {
+            $this->_getSession()->addSuccess($this->__('%d data blocks applied', $cleared));
+        } else {
+            $this->_getSession()->addWarning($this->__('Nothing cleared'));
+        }
+
+        $this->_redirect('*/*/');
+    }
 }
