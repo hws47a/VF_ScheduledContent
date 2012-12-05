@@ -43,10 +43,16 @@
         <resources>
             <admin>
                 <children>
-                    <scheduled_content translate="title" module="scheduledContent">
-                        <title>Scheduled Content</title>
-                        <sort_order>110</sort_order>
-                    </scheduled_content>
+                    <custom_modules>
+                        <title>Custom Modules</title>
+                        <sort_order>80</sort_order>
+                        <children>
+                            <scheduled_content translate="title" module="scheduledContent">
+                                <title>Scheduled Content</title>
+                                <sort_order>110</sort_order>
+                            </scheduled_content>
+                        </children>
+                    </custom_modules>
                 </children>
             </admin>
         </resources>
