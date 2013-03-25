@@ -69,19 +69,20 @@ class VF_ScheduledContent_Adminhtml_ScheduledContentController extends Mage_Admi
     {
         $modelId = intval($this->getRequest()->getParam('id', 0));
         $error = false;
+        $model = Mage::getModel($this->_model);
         if ($modelId) {
-            $model = Mage::getModel($this->_model)->load($modelId);
+            $model->load($modelId);
             if ($model->getId()) {
                 $data = Mage::getSingleton('adminhtml/session')->getFormData(true);
                 if ($data) {
                     $model->setData($data)->setId($modelId);
                 }
-                Mage::register('current_scheduledContent_data', $model);
             } else {
                 $this->_getSession()->addError($this->__('Item doesn\'t exist'));
                 $error = true;
             }
         }
+        Mage::register('current_scheduledContent_data', $model);
 
         if ($error) {
             $this->_redirectError($this->_getRefererUrl());
